@@ -7,6 +7,7 @@
 
 #' @import methods
 #' @import keboola.r.docker.application
+#' @import rsconnect
 #' @export ShinyappDeployment
 #' @exportClass ShinyappDeployment
 ShinyappDeployment <- setRefClass(
@@ -24,7 +25,7 @@ ShinyappDeployment <- setRefClass(
             params <<- .self$getParameters()
             # initialize shinyapps stuff here...
             # call into shinyapps with keboola account credentials
-            shinyapps::setAccountInfo(
+            rsconnect::setAccountInfo(
                 name=.self$params$account, 
                 token=.self$params$token, 
                 secret=.self$params$secret
@@ -34,50 +35,52 @@ ShinyappDeployment <- setRefClass(
         run = function(args) {
             if (args$command == "deploy") {
                 # install packages
-                if (args$cranPackages) {
+                if (length(.self$params$cranPackages) > 0) {
                     .self$installPackages(args$cranPackages,"CRAN")
                 }
-                if (args$githubPackages) {
+                if (length(.self$params$githubPackages) > 0) {
                     .self$installPackages(args$githubPackages, "github")
                 }
-                .self$deploy(args$appName)
+                .self$deploy(.self$params$appName)
             } else if (args$command == "archive") {
                 .self$archive(args$appName)
             }
         },
         
         list = function() {
-            apps <- shinyapps::applications()
-            jsonlite::toJSON(apps)
+            rsconnect::deployments()
         },
-        
-        deploy = function(name) {
+    
+        deploy = function() {
             tryCatch({
-                shinyapps::deployApp(appDir="/home/app", appName=name)        
+                rsconnect::deployApp(appDir="/home/app", appName=.self$params$appName)        
             }, error = function(e) {
                 write(paste("Error deploying application:", e),stderr())
-                stop(e)
+                stop(paste("shinyapp.deployment deploy error:", e))
             })
         }, 
         
-        archive = function(args) {
+        archive = function() {
             tryCatch({
-                shinyapps::archiveApp(appName)
+                shinyapps::archiveApp(.self$params$appName)
             }, error = function(e) {
                 write(paste("Error archiving application", e), stderr())
+                stop(paste("shinyapp.deployment archive error:", e))
             })
         },
         
         installPackages = function(packages, source = "CRAN") {
             # we need to install any github packages that we've been told to.
             packageList <- .self$trim(unlist(strsplit(packages,",")))
-            print(packageList)
-            lapply(githubPackages, function(x){
+            
+            lapply(packages, function(x){
                 print(paste("Installing package",x,"from", source))
                 if (source == "github") {
                     devtools::install_github(x, quiet = TRUE)    
-                } else {
+                } else if (source == "CRAN") {
                     install.packages(x, verbose=FALSE, quiet=TRUE)   
+                } else {
+                    stop(paste("Sorry, I don't know how to install R packages from", source));
                 }
             })
         },
