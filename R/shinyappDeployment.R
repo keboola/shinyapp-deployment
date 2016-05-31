@@ -32,18 +32,18 @@ ShinyappDeployment <- setRefClass(
             )
         },
         
-        run = function(args) {
-            if (args$command == "deploy") {
+        run = function() {
+            if (.self$params$command == "deploy") {
                 # install packages
                 if (length(.self$params$cranPackages) > 0) {
-                    .self$installPackages(args$cranPackages,"CRAN")
+                    .self$installPackages(.self$params$cranPackages,"CRAN")
                 }
                 if (length(.self$params$githubPackages) > 0) {
-                    .self$installPackages(args$githubPackages, "github")
+                    .self$installPackages(.self$params$githubPackages, "github")
                 }
                 .self$deploy(.self$params$appName)
-            } else if (args$command == "archive") {
-                .self$archive(args$appName)
+            } else if (.self$params$command == "archive") {
+                .self$archive(.self$params$appName)
             }
         },
         
@@ -62,7 +62,7 @@ ShinyappDeployment <- setRefClass(
         
         archive = function() {
             tryCatch({
-                shinyapps::archiveApp(.self$params$appName)
+                rsconnect::terminateApp(.self$params$appName)
             }, error = function(e) {
                 write(paste("Error archiving application", e), stderr())
                 stop(paste("shinyapp.deployment archive error:", e))

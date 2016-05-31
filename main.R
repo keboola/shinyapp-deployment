@@ -2,7 +2,7 @@ devtools::load_all('/home/')
 library(keboola.shinyapp.deployment)
 app <- ShinyappDeployment$new(Sys.getenv("KBC_DATADIR"))
 # config is read in the above init method # app$readConfig()
-print(paste("Recieved Config", jsonlite::toJSON(app$configData)))
+write(paste("Recieved Config", jsonlite::toJSON(app$configData)), stderr())
 
 if (app$action == "list") {
     print("begin list")
