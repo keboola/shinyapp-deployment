@@ -4,7 +4,7 @@ MAINTAINER Marc Raiser <marc@keboola.com>
 COPY . /home/
 
 # install packages necessary for shiny-applications in general
-RUN Rscript ./init.R
+RUN Rscript /home/init.R
 
 # run the main script
-ENTRYPOINT Rscript ./main.R
+ENTRYPOINT Rscript /home/main.R
