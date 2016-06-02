@@ -1,17 +1,15 @@
-# Shinyapps.io client
-# Basic API actions:
-#   list - returns a list of deployed KBC applications
-#   run - (default) Asynchronous.  May perform either of the following according to the --command option
-#   deploy - deploys the application as per request configuration
-#   archive - archives application as per request configuration
-
+#' Extention of keboola.r.docker.application 
+#' Used to provide an interface between KBC and shinyapps.io
 #' @import methods
 #' @import keboola.r.docker.application
 #' @import rsconnect
+#' @field action A string from the configuration that tells the app what to do. 
+#' The only possible action right now is list.  terminate and deploy are run asynchronously via the default run action. 
+#' @field params A list of parameters found in the configuration
 #' @export ShinyappDeployment
 #' @exportClass ShinyappDeployment
 ShinyappDeployment <- setRefClass(
-    'CustomApplicationExample',
+    'ShinyappDeployment',
     contains = c("DockerApplication"),
     fields = list(
         action = 'character',

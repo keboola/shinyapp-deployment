@@ -1,4 +1,3 @@
-devtools::load_all('/home/')
 library(keboola.shinyapp.deployment)
 app <- ShinyappDeployment$new(Sys.getenv("KBC_DATADIR"))
 # config is read in the above init method # app$readConfig()
