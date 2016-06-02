@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+    tests:
+        build: .
+        stdin_open: true
+        command: /bin/sh /src/tests.sh
+        volumes:
+            - ./:/src/
