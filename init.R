@@ -1,7 +1,6 @@
-# install packages
-install.packages(c('optparse'), repos = 'http://cran.us.r-project.org', dependencies = c("Depends", "Imports", "LinkingTo"), INSTALL_opts = c("--no-html"))
-
 library('devtools')
+
+print("installing via github")
 
 # install the libraries required for shiny applications
 devtools::install_github('cloudyr/aws.signature', ref = "master")
