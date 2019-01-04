@@ -1,0 +1,14 @@
+language: r
+
+sudo: required
+
+# Be strict when checking our package
+warnings_are_errors: true
+
+r_github_packages:
+ - keboola/r-docker-application
+
+notifications:
+  slack:
+    secure: IPQDZRqZLAE28aiyvSse2K/teCi2E1m8uvmI+GbQlJOtFU+1fhRREq9i6382ZrV2NT0rRyYIqNWZNiKQCz6uVwfg19vMX6tvxfwHsp6fmoW8Y1oqOXi4ueSU/OpFESUJevK1mG4T7uK9/79NZUawHuW7/XdnNGQnZcNRx1UbDaTnd4ohY20rrZu0Nqi+inPCrnN3PDnUr3b4vkPxxStmGipk43E4BtLCyvCU8CfzXrNFRt6/dH0E/qfexNG3YP+reGNPq9u/F0wb8E6vUem9ljzCmZBrYaIWePg6ufSicsC0NpTzgCdPiZWuemN8QmywsXQ61HGUX3sJ6GkTG+11orqS4xoseiQ/p60EXndnI5yj0MhL1MHEQZQhl0kxHLD4lL50kCJC9stsVr/os2i7S5t+jxZYDK2QRP7/1Bkg7DXWr4ku1e3TkOl60ONasHYBoQuDUHb+QmBzQdXlOyMTmnlypuGKNJwtADx4cTaEyil9FiROPgqQGm8cp/FdhKjFlI+B1sRKi8sYDSNMl064Iju/hEQGGR0IBoPeGQlM4ca8LfFlMiYiSjC4GTHxwjeu+l9681GUXfM1IHsVh06HT/EI6SHkFml1A/3yM4J91H3/J3Tg2IkMuZtCKTRYiLdmeRw2ZYU8bVrSRy512rIMp32+4+0PMStN5ngSfP60nQY=
+  email: false
